@@ -346,6 +346,7 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sa
  <div class="nav-label" id="navTareasLabel">Tareas</div>
  <button class="nav-item active" id="navAlba" data-view="lista-alba" onclick="showView('lista-alba',this)"><span class="avatar" style="background:var(--kiwi);">A</span><span class="label">Lista Alba</span></button>
  <button class="nav-item" id="navDaniela" data-view="lista-carlota" onclick="showView('lista-carlota',this)"><span class="avatar" style="background:var(--p-grape);">D</span><span class="label">Lista Daniela</span></button>
+ <button class="nav-item" id="navRrss" data-view="lista-rrss" onclick="showView('lista-rrss',this)"><span class="ico">📸</span><span class="label">Publicaciones</span></button>
  </div>
  <div class="nav-section">
  <div class="nav-label">Proyectos <span class="add" onclick="openProjectModal()" title="Nuevo proyecto" style="font-size:16px; font-weight:600; color:var(--kiwi);">+</span></div>
@@ -405,16 +406,22 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sa
 
  <section class="view" id="view-cal-rrss">
  <div class="cal-head"><div class="cal-nav"><span class="cal-month" id="calRrssMonth">Junio 2026</span><div class="cal-ctrls"><button class="cal-btn" onclick="cambiarMes('rrss',-1)">‹</button><button class="cal-btn text" onclick="irHoy('rrss')">Hoy</button><button class="cal-btn" onclick="cambiarMes('rrss',1)">›</button></div></div><div class="view-actions"><button class="btn btn-primary" onclick="openCreateModal(null,true)">+ Publicación</button></div></div>
+ <div class="tabs"><button class="tab" onclick="showView('lista-rrss')">Lista</button><button class="tab active">Calendario</button></div>
  <div style="display:flex; gap:14px; margin-bottom:14px; flex-wrap:wrap;"><span style="font-size:12px; color:var(--ink-2); display:flex; align-items:center; gap:6px;"><span style="width:10px;height:10px;background:#7B4BC4;border-radius:3px;"></span>Story</span><span style="font-size:12px; color:var(--ink-2); display:flex; align-items:center; gap:6px;"><span style="width:10px;height:10px;background:#C6460E;border-radius:3px;"></span>Reel</span><span style="font-size:12px; color:var(--ink-2); display:flex; align-items:center; gap:6px;"><span style="width:10px;height:10px;background:#2F8F6B;border-radius:3px;"></span>Carrusel</span><span style="font-size:12px; color:var(--ink-2); display:flex; align-items:center; gap:6px;"><span style="width:10px;height:10px;background:var(--news);border-radius:3px;"></span>Newsletter</span><span style="font-size:12px; color:var(--ink-2); display:flex; align-items:center; gap:6px;"><span style="width:10px;height:10px;background:#D9CFB8;border-radius:3px;"></span>Otros</span></div>
  <div class="cal-weekdays"><div class="cal-weekday">Lun</div><div class="cal-weekday">Mar</div><div class="cal-weekday">Mié</div><div class="cal-weekday">Jue</div><div class="cal-weekday">Vie</div><div class="cal-weekday">Sáb</div><div class="cal-weekday">Dom</div></div>
  <div class="cal-grid" id="calRrssGrid"></div>
- <div style="margin-top:26px;">
-   <div class="view-header" style="margin-bottom:0;">
-     <div class="view-title-wrap"><div class="view-title" style="font-size:17px;">Publicaciones</div><div class="view-sub" id="subRrss"></div></div>
-     <div class="view-actions"><button class="btn btn-ghost" id="filterBtnRrss" onclick="toggleFilter('rrss',this)">⚲ Solo pendientes</button></div>
-   </div>
-   <div id="listRrss"></div>
+ </section>
+
+ <section class="view" id="view-lista-rrss">
+ <div class="view-header">
+ <div class="view-title-wrap"><div class="view-avatar" style="background:var(--p-grape);">📸</div><div><div class="view-title">Publicaciones</div><div class="view-sub" id="subRrss"></div></div></div>
+ <div class="view-actions">
+ <button class="btn btn-ghost" id="filterBtnRrss" onclick="toggleFilter('rrss',this)">⚲ Solo pendientes</button>
+ <button class="btn btn-primary" onclick="openCreateModal(null,true)">+ Publicación</button>
  </div>
+ </div>
+ <div class="tabs"><button class="tab active">Lista</button><button class="tab" onclick="showView('cal-rrss')">Calendario</button></div>
+ <div id="listRrss"></div>
  </section>
 
  <section class="view" id="view-tablero-persona">
@@ -1280,7 +1287,7 @@ function toggleFilter(persona,btn){
 }
 
 // ===== NAVEGACIÓN =====
-const titulos={'lista-alba':'Lista Alba','lista-carlota':'Lista Daniela','cal-general':'Calendario general','cal-rrss':'Calendario RRSS','proyecto-kiwi':'Proyecto','tablero-persona':'Tablero','notas':'Plan de contenido'};
+const titulos={'lista-alba':'Lista Alba','lista-carlota':'Lista Daniela','cal-general':'Calendario general','cal-rrss':'Calendario RRSS','proyecto-kiwi':'Proyecto','tablero-persona':'Tablero','lista-rrss':'Publicaciones','notas':'Plan de contenido'};
 function showView(id,el){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   const target=document.getElementById('view-'+id); if(target) target.classList.add('active');
