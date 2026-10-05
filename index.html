@@ -101,6 +101,7 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sa
 .empty-hint { font-size:13px; color:var(--ink-faint); padding:10px 12px; font-style:italic; }
 
 .kanban { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+.kanban.kanban-3 { grid-template-columns:repeat(3,1fr); }
 .kanban-col-head { display:flex; align-items:center; gap:8px; padding:0 6px 10px 6px; }
 .kanban-col-head .st-dot { width:6px; height:6px; border-radius:50%; }
 .kanban-col-head .name { font-size:12px; font-weight:600; }
@@ -406,7 +407,7 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sa
 
  <section class="view" id="view-cal-rrss">
  <div class="cal-head"><div class="cal-nav"><span class="cal-month" id="calRrssMonth">Junio 2026</span><div class="cal-ctrls"><button class="cal-btn" onclick="cambiarMes('rrss',-1)">‹</button><button class="cal-btn text" onclick="irHoy('rrss')">Hoy</button><button class="cal-btn" onclick="cambiarMes('rrss',1)">›</button></div></div><div class="view-actions"><button class="btn btn-primary" onclick="openCreateModal(null,true)">+ Publicación</button></div></div>
- <div class="tabs"><button class="tab" onclick="showView('lista-rrss')">Lista</button><button class="tab active">Calendario</button></div>
+ <div class="tabs"><button class="tab" onclick="showView('lista-rrss')">Lista</button><button class="tab" onclick="showView('tablero-rrss')">Tablero</button><button class="tab active">Calendario</button></div>
  <div style="display:flex; gap:14px; margin-bottom:14px; flex-wrap:wrap;"><span style="font-size:12px; color:var(--ink-2); display:flex; align-items:center; gap:6px;"><span style="width:10px;height:10px;background:#7B4BC4;border-radius:3px;"></span>Story</span><span style="font-size:12px; color:var(--ink-2); display:flex; align-items:center; gap:6px;"><span style="width:10px;height:10px;background:#C6460E;border-radius:3px;"></span>Reel</span><span style="font-size:12px; color:var(--ink-2); display:flex; align-items:center; gap:6px;"><span style="width:10px;height:10px;background:#2F8F6B;border-radius:3px;"></span>Carrusel</span><span style="font-size:12px; color:var(--ink-2); display:flex; align-items:center; gap:6px;"><span style="width:10px;height:10px;background:var(--news);border-radius:3px;"></span>Newsletter</span><span style="font-size:12px; color:var(--ink-2); display:flex; align-items:center; gap:6px;"><span style="width:10px;height:10px;background:#D9CFB8;border-radius:3px;"></span>Otros</span></div>
  <div class="cal-weekdays"><div class="cal-weekday">Lun</div><div class="cal-weekday">Mar</div><div class="cal-weekday">Mié</div><div class="cal-weekday">Jue</div><div class="cal-weekday">Vie</div><div class="cal-weekday">Sáb</div><div class="cal-weekday">Dom</div></div>
  <div class="cal-grid" id="calRrssGrid"></div>
@@ -420,8 +421,17 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sa
  <button class="btn btn-primary" onclick="openCreateModal(null,true)">+ Publicación</button>
  </div>
  </div>
- <div class="tabs"><button class="tab active">Lista</button><button class="tab" onclick="showView('cal-rrss')">Calendario</button></div>
+ <div class="tabs"><button class="tab active">Lista</button><button class="tab" onclick="showView('tablero-rrss')">Tablero</button><button class="tab" onclick="showView('cal-rrss')">Calendario</button></div>
  <div id="listRrss"></div>
+ </section>
+
+ <section class="view" id="view-tablero-rrss">
+ <div class="view-header">
+ <div class="view-title-wrap"><div class="view-avatar" style="background:var(--p-grape);">📸</div><div><div class="view-title">Publicaciones</div><div class="view-sub" id="subTabRrss"></div></div></div>
+ <div class="view-actions"><button class="btn btn-primary" onclick="openCreateModal(null,true)">+ Publicación</button></div>
+ </div>
+ <div class="tabs"><button class="tab" onclick="showView('lista-rrss')">Lista</button><button class="tab active">Tablero</button><button class="tab" onclick="showView('cal-rrss')">Calendario</button></div>
+ <div class="kanban kanban-3" id="kanbanRrss"></div>
  </section>
 
  <section class="view" id="view-tablero-persona">
@@ -898,6 +908,41 @@ function renderKanbanPersona(){
   }).join('');
 }
 
+// Tablero de publicaciones: tres columnas por estado de publicación
+const PUB_COLORES={'En proceso':'--st-doing','Listo':'--st-review','Publicado':'--st-done'};
+function renderKanbanRrss(){
+  const cont=document.getElementById('kanbanRrss');
+  if(!cont) return;
+  const items=tareas.filter(t=>t.rrss);
+  const sub=document.getElementById('subTabRrss');
+  if(sub) sub.textContent=items.length?`${items.length} publicaciones · ${items.filter(t=>(t.pubState||'En proceso')!=='Publicado').length} sin publicar`:'';
+  if(!items.length){
+    cont.innerHTML='<div class="empty-hint">No hay publicaciones. Crea una con "+ Publicación".</div>';
+    return;
+  }
+  const porFecha=(a,b)=>(a.fechaISO||'9999').localeCompare(b.fechaISO||'9999');
+  cont.innerHTML=PUB_ESTADOS.map(est=>{
+    const cards=items.filter(t=>(t.pubState||'En proceso')===est).sort(porFecha);
+    return `<div class="kanban-column">
+      <div class="kanban-col-head"><span class="st-dot" style="background:var(${PUB_COLORES[est]});"></span><span class="name">${est}</span><span class="count">${cards.length}</span></div>
+      <div class="kanban-cards" data-state="${est}" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDropPub(event,'${est}')">
+        ${cards.map(t=>kanbanCardHTML(t)).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+// Soltar en el tablero de publicaciones cambia el estado de publicación, no el de tarea
+async function onDropPub(e,nuevoEstado){
+  e.preventDefault();e.currentTarget.classList.remove('dragover');
+  if(dragId==null) return;
+  const t=tareas.find(x=>x.id===dragId);
+  if(!t) return;
+  if(!puedoEditar(t)){showToast('Solo puedes mover tus propias publicaciones');return;}
+  t.pubState=nuevoEstado;renderAll();
+  const {error}=await sb.from('tareas').update({estado_publicacion:nuevoEstado}).eq('id',t.id);
+  if(error) showToast('Error al guardar: '+error.message); else showToast('Movida a "'+nuevoEstado+'"');
+}
+
 function kanbanCardHTML(t){
   const tag=t.rrss?pillFormato(t):(t.prio==='Alta'?'<span class="pill" style="background:var(--coral-light); color:var(--coral);">Alta</span>':(t.fechaISO?dateTxt(t):'<span class="date-txt">Sin fecha</span>'));
   const av=avatarColor[t.resp];
@@ -1287,7 +1332,7 @@ function toggleFilter(persona,btn){
 }
 
 // ===== NAVEGACIÓN =====
-const titulos={'lista-alba':'Lista Alba','lista-carlota':'Lista Daniela','cal-general':'Calendario general','cal-rrss':'Calendario RRSS','proyecto-kiwi':'Proyecto','tablero-persona':'Tablero','lista-rrss':'Publicaciones','notas':'Plan de contenido'};
+const titulos={'lista-alba':'Lista Alba','lista-carlota':'Lista Daniela','cal-general':'Calendario general','cal-rrss':'Calendario RRSS','proyecto-kiwi':'Proyecto','tablero-persona':'Tablero','lista-rrss':'Publicaciones','tablero-rrss':'Publicaciones','notas':'Plan de contenido'};
 function showView(id,el){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   const target=document.getElementById('view-'+id); if(target) target.classList.add('active');
@@ -1508,7 +1553,7 @@ async function ideaAPublicacion(id){
 function renderAll(){
   renderProyectosSidebar(); llenarSelectProyectos();
   renderLista('Alba'); renderLista('Daniela'); renderKanban();
-  renderListaRrss(); renderKanbanPersona();
+  renderListaRrss(); renderKanbanPersona(); renderKanbanRrss();
   buildCal('calGeneralGrid','general'); buildCal('calRrssGrid','rrss');
   renderNotif(); renderIdeas();
 }
