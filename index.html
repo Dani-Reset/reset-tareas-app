@@ -338,16 +338,11 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sa
  <div class="search-box"><span style="flex:none;">🔍</span><input type="text" id="searchInput" placeholder="Buscar tareas…" oninput="buscar(this.value)" onfocus="buscar(this.value)" style="border:none; background:none; flex:1; font-family:inherit; font-size:13px; color:var(--ink); outline:none; padding:0;"></div>
  <div class="search-results" id="searchResults"></div>
  </div>
- <div class="nav-section">
- <div class="nav-label">Calendarios</div>
- <button class="nav-item" data-view="cal-general" onclick="showView('cal-general',this)"><span class="ico">🗓</span><span class="label">Tareas general</span></button>
- <button class="nav-item" data-view="cal-rrss" onclick="showView('cal-rrss',this)"><span class="ico">📸</span><span class="label">RRSS</span></button>
- </div>
  <div class="nav-section" id="navTareas">
  <div class="nav-label" id="navTareasLabel">Tareas</div>
- <button class="nav-item active" id="navAlba" data-view="lista-alba" onclick="showView('lista-alba',this)"><span class="avatar" style="background:var(--kiwi);">A</span><span class="label">Lista Alba</span></button>
- <button class="nav-item" id="navDaniela" data-view="lista-carlota" onclick="showView('lista-carlota',this)"><span class="avatar" style="background:var(--p-grape);">D</span><span class="label">Lista Daniela</span></button>
- <button class="nav-item" id="navRrss" data-view="lista-rrss" onclick="showView('lista-rrss',this)"><span class="ico">📸</span><span class="label">Publicaciones</span></button>
+ <button class="nav-item active" id="navAlba" data-view="lista-alba" onclick="showView('lista-alba',this)"><span class="avatar" style="background:var(--kiwi);">A</span><span class="label">Alba</span></button>
+ <button class="nav-item" id="navDaniela" data-view="lista-carlota" onclick="showView('lista-carlota',this)"><span class="avatar" style="background:var(--p-grape);">D</span><span class="label">Daniela</span></button>
+ <button class="nav-item" id="navRrss" data-view="lista-rrss" onclick="showView('lista-rrss',this)"><span class="ico">📸</span><span class="label">RRSS</span></button>
  </div>
  <div class="nav-section">
  <div class="nav-label">Proyectos <span class="add" onclick="openProjectModal()" title="Nuevo proyecto" style="font-size:16px; font-weight:600; color:var(--kiwi);">+</span></div>
@@ -371,38 +366,43 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sa
  <div style="flex:1; display:flex; flex-direction:column; overflow:hidden;">
  <div class="mobile-bar">
  <button class="hamburger" onclick="openSidebar()">☰</button>
- <span class="mb-title" id="mbTitle">Lista Alba</span>
+ <span class="mb-title" id="mbTitle">Alba</span>
  <button class="hamburger" onclick="openCreateModal()" style="font-size:24px;">+</button>
  </div>
  <main class="main" id="main">
  <section class="view active" id="view-lista-alba">
  <div class="view-header">
- <div class="view-title-wrap"><div class="view-avatar" style="background:var(--kiwi);">A</div><div><div class="view-title">Lista Alba</div><div class="view-sub" id="subAlba"></div></div></div>
+ <div class="view-title-wrap"><div class="view-avatar" style="background:var(--kiwi);">A</div><div><div class="view-title">Alba</div><div class="view-sub" id="subAlba"></div></div></div>
  <div class="view-actions">
  <button class="btn btn-ghost" id="filterBtnAlba" onclick="toggleFilter('alba',this)">⚲ Solo activas</button>
  <button class="btn btn-primary" onclick="openCreateModal('Alba')">+ Nueva tarea</button>
  </div>
  </div>
- <div class="tabs"><button class="tab active">Lista</button><button class="tab" onclick="verTableroPersona('Alba')">Tablero</button><button class="tab" onclick="showView('cal-general')">Calendario</button></div>
+ <div class="tabs"><button class="tab active">Lista</button><button class="tab" onclick="verTableroPersona('Alba')">Tablero</button><button class="tab" onclick="verCalendarioPersona('Alba')">Calendario</button></div>
  <div id="listAlba"></div>
  </section>
 
  <section class="view" id="view-lista-carlota">
  <div class="view-header">
- <div class="view-title-wrap"><div class="view-avatar" style="background:var(--p-grape);">D</div><div><div class="view-title">Lista Daniela</div><div class="view-sub" id="subDaniela"></div></div></div>
+ <div class="view-title-wrap"><div class="view-avatar" style="background:var(--p-grape);">D</div><div><div class="view-title">Daniela</div><div class="view-sub" id="subDaniela"></div></div></div>
  <div class="view-actions">
  <button class="btn btn-ghost" id="filterBtnDaniela" onclick="toggleFilter('carlota',this)">⚲ Solo activas</button>
  <button class="btn btn-primary" onclick="openCreateModal('Daniela')">+ Nueva tarea</button>
  </div>
  </div>
- <div class="tabs"><button class="tab active">Lista</button><button class="tab" onclick="verTableroPersona('Daniela')">Tablero</button><button class="tab" onclick="showView('cal-general')">Calendario</button></div>
+ <div class="tabs"><button class="tab active">Lista</button><button class="tab" onclick="verTableroPersona('Daniela')">Tablero</button><button class="tab" onclick="verCalendarioPersona('Daniela')">Calendario</button></div>
  <div id="listDaniela"></div>
  </section>
 
- <section class="view" id="view-cal-general">
- <div class="cal-head"><div class="cal-nav"><span class="cal-month" id="calGeneralMonth">Junio 2026</span><div class="cal-ctrls"><button class="cal-btn" onclick="cambiarMes('general',-1)">‹</button><button class="cal-btn text" onclick="irHoy('general')">Hoy</button><button class="cal-btn" onclick="cambiarMes('general',1)">›</button></div></div><div class="view-actions"><button class="btn btn-primary" onclick="openCreateModal()">+ Evento</button></div></div>
+ <section class="view" id="view-cal-persona">
+ <div class="view-header">
+ <div class="view-title-wrap"><div class="view-avatar" id="calPersonaAvatar" style="background:var(--kiwi);">A</div><div><div class="view-title" id="calPersonaTitulo">Alba</div><div class="view-sub" id="subCalPersona"></div></div></div>
+ <div class="view-actions"><button class="btn btn-primary" id="calPersonaNuevaBtn" onclick="openCreateModal(personaCal)">+ Nueva tarea</button></div>
+ </div>
+ <div class="tabs"><button class="tab" id="calPersonaLista" onclick="showView(personaCal==='Alba'?'lista-alba':'lista-carlota')">Lista</button><button class="tab" onclick="verTableroPersona(personaCal)">Tablero</button><button class="tab active">Calendario</button></div>
+ <div class="cal-head"><div class="cal-nav"><span class="cal-month" id="calPersonaMonth">Junio 2026</span><div class="cal-ctrls"><button class="cal-btn" onclick="cambiarMes('persona',-1)">‹</button><button class="cal-btn text" onclick="irHoy('persona')">Hoy</button><button class="cal-btn" onclick="cambiarMes('persona',1)">›</button></div></div></div>
  <div class="cal-weekdays"><div class="cal-weekday">Lun</div><div class="cal-weekday">Mar</div><div class="cal-weekday">Mié</div><div class="cal-weekday">Jue</div><div class="cal-weekday">Vie</div><div class="cal-weekday">Sáb</div><div class="cal-weekday">Dom</div></div>
- <div class="cal-grid" id="calGeneralGrid"></div>
+ <div class="cal-grid" id="calPersonaGrid"></div>
  </section>
 
  <section class="view" id="view-cal-rrss">
@@ -415,7 +415,7 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sa
 
  <section class="view" id="view-lista-rrss">
  <div class="view-header">
- <div class="view-title-wrap"><div class="view-avatar" style="background:var(--p-grape);">📸</div><div><div class="view-title">Publicaciones</div><div class="view-sub" id="subRrss"></div></div></div>
+ <div class="view-title-wrap"><div class="view-avatar" style="background:var(--p-grape);">📸</div><div><div class="view-title">RRSS</div><div class="view-sub" id="subRrss"></div></div></div>
  <div class="view-actions">
  <button class="btn btn-ghost" id="filterBtnRrss" onclick="toggleFilter('rrss',this)">⚲ Solo pendientes</button>
  <button class="btn btn-primary" onclick="openCreateModal(null,true)">+ Publicación</button>
@@ -427,7 +427,7 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sa
 
  <section class="view" id="view-tablero-rrss">
  <div class="view-header">
- <div class="view-title-wrap"><div class="view-avatar" style="background:var(--p-grape);">📸</div><div><div class="view-title">Publicaciones</div><div class="view-sub" id="subTabRrss"></div></div></div>
+ <div class="view-title-wrap"><div class="view-avatar" style="background:var(--p-grape);">📸</div><div><div class="view-title">RRSS</div><div class="view-sub" id="subTabRrss"></div></div></div>
  <div class="view-actions"><button class="btn btn-primary" onclick="openCreateModal(null,true)">+ Publicación</button></div>
  </div>
  <div class="tabs"><button class="tab" onclick="showView('lista-rrss')">Lista</button><button class="tab active">Tablero</button><button class="tab" onclick="showView('cal-rrss')">Calendario</button></div>
@@ -439,15 +439,47 @@ body { font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sa
  <div class="view-title-wrap"><div class="view-avatar" id="tabPersonaAvatar" style="background:var(--kiwi);">A</div><div><div class="view-title" id="tabPersonaTitulo">Tablero Alba</div><div class="view-sub" id="subTabPersona"></div></div></div>
  <div class="view-actions"><button class="btn btn-primary" id="tabPersonaNuevaBtn" onclick="openCreateModal(personaTablero)">+ Nueva tarea</button></div>
  </div>
- <div class="tabs"><button class="tab" id="tabPersonaLista" onclick="showView(personaTablero==='Alba'?'lista-alba':'lista-carlota')">Lista</button><button class="tab active">Tablero</button><button class="tab" onclick="showView('cal-general')">Calendario</button></div>
+ <div class="tabs"><button class="tab" id="tabPersonaLista" onclick="showView(personaTablero==='Alba'?'lista-alba':'lista-carlota')">Lista</button><button class="tab active">Tablero</button><button class="tab" onclick="verCalendarioPersona(personaTablero)">Calendario</button></div>
  <div class="kanban" id="kanbanPersona"></div>
  </section>
 
  <section class="view" id="view-proyecto-kiwi">
  <div class="breadcrumb"><span>Proyectos</span><span class="sep">›</span><span class="current" id="projBreadcrumb">Nueva web</span></div>
  <div class="view-header"><div class="view-title-wrap"><div id="projDot" style="width:13px; height:13px; background:var(--p-kiwi); border-radius:4px;"></div><div class="view-title" id="projTitle">Nueva web</div><span style="font-size:12px; color:var(--ink-3);" id="kiwiCount"></span></div><div class="view-actions"><button class="btn btn-primary" id="projNewBtn" onclick="openCreateModal(null,false,proyectoActivo)">+ Nueva tarea</button></div></div>
- <div class="tabs"><button class="tab" onclick="showView('lista-alba')">Lista</button><button class="tab active">Tablero</button><button class="tab" onclick="showView('cal-general')">Calendario</button><button class="tab" onclick="showView('notas')">Notas</button></div>
+ <div class="tabs"><button class="tab" onclick="verListaProyecto()">Lista</button><button class="tab active">Tablero</button><button class="tab" onclick="verCalendarioProyecto()">Calendario</button><button class="tab" onclick="verNotasProyecto()">Notas</button></div>
  <div class="kanban" id="kanban"></div>
+ </section>
+
+ <section class="view" id="view-lista-proyecto">
+ <div class="breadcrumb"><span>Proyectos</span><span class="sep">›</span><span class="current" id="lpBreadcrumb">Proyecto</span></div>
+ <div class="view-header">
+ <div class="view-title-wrap"><div id="lpDot" style="width:13px; height:13px; background:var(--p-kiwi); border-radius:4px;"></div><div><div class="view-title" id="lpTitle">Proyecto</div><div class="view-sub" id="subListaProy"></div></div></div>
+ <div class="view-actions"><button class="btn btn-primary" onclick="openCreateModal(null,false,proyectoActivo)">+ Nueva tarea</button></div>
+ </div>
+ <div class="tabs"><button class="tab active">Lista</button><button class="tab" onclick="abrirProyecto(proyectoActivo)">Tablero</button><button class="tab" onclick="verCalendarioProyecto()">Calendario</button><button class="tab" onclick="verNotasProyecto()">Notas</button></div>
+ <div id="listProyecto"></div>
+ </section>
+
+ <section class="view" id="view-cal-proyecto">
+ <div class="breadcrumb"><span>Proyectos</span><span class="sep">›</span><span class="current" id="cpBreadcrumb">Proyecto</span></div>
+ <div class="view-header">
+ <div class="view-title-wrap"><div id="cpDot" style="width:13px; height:13px; background:var(--p-kiwi); border-radius:4px;"></div><div><div class="view-title" id="cpTitle">Proyecto</div><div class="view-sub" id="subCalProy"></div></div></div>
+ <div class="view-actions"><button class="btn btn-primary" onclick="openCreateModal(null,false,proyectoActivo)">+ Nueva tarea</button></div>
+ </div>
+ <div class="tabs"><button class="tab" onclick="verListaProyecto()">Lista</button><button class="tab" onclick="abrirProyecto(proyectoActivo)">Tablero</button><button class="tab active">Calendario</button><button class="tab" onclick="verNotasProyecto()">Notas</button></div>
+ <div class="cal-head"><div class="cal-nav"><span class="cal-month" id="calProyMonth">Junio 2026</span><div class="cal-ctrls"><button class="cal-btn" onclick="cambiarMes('proyecto',-1)">‹</button><button class="cal-btn text" onclick="irHoy('proyecto')">Hoy</button><button class="cal-btn" onclick="cambiarMes('proyecto',1)">›</button></div></div></div>
+ <div style="display:flex; gap:14px; margin-bottom:14px; flex-wrap:wrap;"><span style="font-size:12px; color:var(--ink-2); display:flex; align-items:center; gap:6px;"><span style="width:10px;height:10px;background:var(--kiwi);border-radius:3px;"></span>Alba</span><span style="font-size:12px; color:var(--ink-2); display:flex; align-items:center; gap:6px;"><span style="width:10px;height:10px;background:var(--p-grape);border-radius:3px;"></span>Daniela</span></div>
+ <div class="cal-weekdays"><div class="cal-weekday">Lun</div><div class="cal-weekday">Mar</div><div class="cal-weekday">Mié</div><div class="cal-weekday">Jue</div><div class="cal-weekday">Vie</div><div class="cal-weekday">Sáb</div><div class="cal-weekday">Dom</div></div>
+ <div class="cal-grid" id="calProyGrid"></div>
+ </section>
+
+ <section class="view" id="view-notas-proyecto">
+ <div class="breadcrumb"><span>Proyectos</span><span class="sep">›</span><span class="current" id="npBreadcrumb">Proyecto</span></div>
+ <div class="view-header">
+ <div class="view-title-wrap"><div id="npDot" style="width:13px; height:13px; background:var(--p-kiwi); border-radius:4px;"></div><div><div class="view-title" id="npTitle">Proyecto</div><div class="view-sub" id="npEstado">Notas del proyecto</div></div></div>
+ </div>
+ <div class="tabs"><button class="tab" onclick="verListaProyecto()">Lista</button><button class="tab" onclick="abrirProyecto(proyectoActivo)">Tablero</button><button class="tab" onclick="verCalendarioProyecto()">Calendario</button><button class="tab active">Notas</button></div>
+ <textarea id="notasProyecto" placeholder="Escribe aquí las notas de este proyecto…" oninput="notasProyectoCambio()" style="width:100%; min-height:420px; font-family:inherit; font-size:14px; line-height:1.6; padding:14px 16px; border:0.5px solid var(--line); border-radius:8px; background:var(--card); color:var(--ink); outline:none; resize:vertical;"></textarea>
  </section>
 
  <section class="view" id="view-notas">
@@ -686,7 +718,7 @@ async function cargarProyectos(){
     proyectosSupabase=nuevos||[];
   }
   // Sincronizar el array local que usa la interfaz
-  proyectos=proyectosSupabase.map(p=>({nombre:p.nombre,color:p.color_indice,id:p.id}));
+  proyectos=proyectosSupabase.map(p=>({nombre:p.nombre,color:p.color_indice,id:p.id,notas:p.notas||''}));
   reconstruirColores();
   if(!proyectoActivo && proyectos.length) proyectoActivo=proyectos[0].nombre;
 }
@@ -717,6 +749,12 @@ function pillProyecto(proj){
   if(!proj) return '<span class="pill" style="background:var(--hover); color:var(--ink-2);">General</span>';
   const c=colorProducto[proj]; return `<span class="pill" style="background:${c.bg}; color:${c.fg};">${proj}</span>`;
 }
+// En la lista de un proyecto la chapa del proyecto sobra (todas son del mismo):
+// lo que hace falta saber ahí es de quién es cada tarea.
+function pillPersona(resp){
+  if(!resp) return '<span class="pill" style="background:var(--hover); color:var(--ink-2);">Sin asignar</span>';
+  return `<span class="pill" style="background:${avatarColor[resp]||'var(--hover)'}; color:#fff;">${resp}</span>`;
+}
 function pillFormato(t){
   if(!t.rrss) return '';
   // Fondo suave y texto legible por plataforma
@@ -746,7 +784,7 @@ function dateTxt(t){
   if(!t.fechaISO) return '<span class="date-txt">—</span>';
   return `<span class="date-txt${estaVencida(t)?' overdue':''}">${fechaCorta(t.fechaISO)}</span>`;
 }
-function taskRowHTML(t){
+function taskRowHTML(t,conPersona){
   const overdue=estaVencida(t);
   const editable=puedoEditar(t);
   const check=editable
@@ -756,7 +794,7 @@ function taskRowHTML(t){
   return `<div class="task-row${overdue?' overdue':''}${t.done?' completed':''}" ${drag} onclick="openTaskPanel(${t.id})">
     ${check}
     <span class="task-title">${t.t}</span>
-    <div class="task-meta-right">${puntoEstado(t)}${t.rrss?pillFormato(t):pillProyecto(t.proj)}${prioTxt(t.prio)}${dateTxt(t)}</div>
+    <div class="task-meta-right">${puntoEstado(t)}${t.rrss?pillFormato(t):(conPersona?pillPersona(t.resp):pillProyecto(t.proj))}${prioTxt(t.prio)}${dateTxt(t)}</div>
   </div>`;
 }
 // Arrastre en listas: usa el mismo mecanismo de cambio de fecha
@@ -788,20 +826,28 @@ function renderLista(persona){
   const subEl=document.getElementById(persona==='Alba'?'subAlba':'subDaniela');
   if(subEl) subEl.textContent=`${activas} tareas activas · ${retraso} con retraso`;
 
+  let html=listaAgrupadaHTML(items);
+  if(!items.length) html='<div class="empty-hint">No hay tareas. Crea una con "+ Nueva tarea".</div>';
+  cont.innerHTML=html;
+}
+
+// Agrupa unas tareas en Con retraso / Hoy / Próximas-sin fecha / Hechas.
+// La usan la lista de cada persona y la lista de cada proyecto.
+function listaAgrupadaHTML(items,conPersona){
+  const fila=t=>taskRowHTML(t,conPersona);
   let html='';
   const hoy_iso=hoyISO();
   const overdue=items.filter(t=>estaVencida(t));
   const hoy=items.filter(t=>!t.done && t.fechaISO===hoy_iso);
   const semana=items.filter(t=>!t.done && (!t.fechaISO || t.fechaISO>hoy_iso));
   const hechas=items.filter(t=>t.done);
-  if(overdue.length){html+='<div class="group-label overdue">Con retraso</div><div class="task-list">'+overdue.map(taskRowHTML).join('')+'</div>';}
+  if(overdue.length){html+='<div class="group-label overdue">Con retraso</div><div class="task-list">'+overdue.map(fila).join('')+'</div>';}
   // Grupo HOY: acepta soltar (pone fecha de hoy)
-  html+='<div class="group-label">Hoy</div><div class="task-list grupo-drop" ondragover="grupoDragOver(event)" ondragleave="grupoDragLeave(event)" ondrop="grupoDrop(event,\'hoy\')">'+(hoy.length?hoy.map(taskRowHTML).join(''):'<div class="empty-hint" style="padding:6px 12px;">Arrastra aquí una tarea para ponerla hoy</div>')+'</div>';
+  html+='<div class="group-label">Hoy</div><div class="task-list grupo-drop" ondragover="grupoDragOver(event)" ondragleave="grupoDragLeave(event)" ondrop="grupoDrop(event,\'hoy\')">'+(hoy.length?hoy.map(fila).join(''):'<div class="empty-hint" style="padding:6px 12px;">Arrastra aquí una tarea para ponerla hoy</div>')+'</div>';
   // Grupo PRÓXIMAS / SIN FECHA: acepta soltar (quita la fecha)
-  html+='<div class="group-label">Próximas / sin fecha</div><div class="task-list grupo-drop" ondragover="grupoDragOver(event)" ondragleave="grupoDragLeave(event)" ondrop="grupoDrop(event,\'sinfecha\')">'+(semana.length?semana.map(taskRowHTML).join(''):'<div class="empty-hint" style="padding:6px 12px;">Arrastra aquí para quitar la fecha</div>')+'</div>';
-  if(hechas.length){html+='<div class="group-label">Hechas</div><div class="task-list">'+hechas.map(taskRowHTML).join('')+'</div>';}
-  if(!items.length) html='<div class="empty-hint">No hay tareas. Crea una con "+ Nueva tarea".</div>';
-  cont.innerHTML=html;
+  html+='<div class="group-label">Próximas / sin fecha</div><div class="task-list grupo-drop" ondragover="grupoDragOver(event)" ondragleave="grupoDragLeave(event)" ondrop="grupoDrop(event,\'sinfecha\')">'+(semana.length?semana.map(fila).join(''):'<div class="empty-hint" style="padding:6px 12px;">Arrastra aquí para quitar la fecha</div>')+'</div>';
+  if(hechas.length){html+='<div class="group-label">Hechas</div><div class="task-list">'+hechas.map(fila).join('')+'</div>';}
+  return html;
 }
 
 // ===== LISTADO DE PUBLICACIONES (bajo el calendario RRSS) =====
@@ -825,7 +871,7 @@ function renderListaRrss(){
     const grupo=items.filter(t=>(t.pubState||'En proceso')===est).sort(porFecha);
     if(!grupo.length) return;
     html+=`<div class="group-label">${est} <span style="color:var(--ink-3); font-weight:400;">· ${grupo.length}</span></div>`;
-    html+='<div class="task-list">'+grupo.map(taskRowHTML).join('')+'</div>';
+    html+='<div class="task-list">'+grupo.map(t=>taskRowHTML(t)).join('')+'</div>';
   });
   cont.innerHTML=html;
 }
@@ -892,7 +938,7 @@ function renderKanbanPersona(){
   const sub=document.getElementById('subTabPersona');
   if(sub) sub.textContent=`${items.filter(t=>!t.done).length} tareas activas de ${items.length}`;
   const lt=document.getElementById('tabPersonaLista');
-  if(lt) lt.textContent='Lista '+persona;
+  if(lt) lt.textContent=persona;
   if(!items.length){
     cont.innerHTML='<div class="empty-hint">'+persona+' no tiene tareas todavía.</div>';
     return;
@@ -906,6 +952,25 @@ function renderKanbanPersona(){
       </div>
     </div>`;
   }).join('');
+}
+
+// Calendario de una persona: solo sus tareas con fecha (las de redes van aparte)
+function verCalendarioPersona(persona){
+  personaCal=persona;
+  showView('cal-persona');
+  renderCalPersona();
+}
+function renderCalPersona(){
+  const persona=personaCal;
+  const av=document.getElementById('calPersonaAvatar');
+  if(av){ av.textContent=persona[0]; av.style.background=avatarColor[persona]||'var(--kiwi)'; }
+  const tt=document.getElementById('calPersonaTitulo'); if(tt) tt.textContent=persona;
+  const lt=document.getElementById('calPersonaLista'); if(lt) lt.textContent=persona;
+  const items=tareas.filter(t=>t.resp===persona && !t.rrss && !t.done);
+  const conFecha=items.filter(t=>t.fechaISO).length;
+  const sub=document.getElementById('subCalPersona');
+  if(sub) sub.textContent=conFecha+' con fecha · '+(items.length-conFecha)+' sin fecha (no salen en el calendario)';
+  buildCal('persona');
 }
 
 // Tablero de publicaciones: tres columnas por estado de publicación
@@ -997,14 +1062,36 @@ async function moveCardMobile(id){
 // ===== CALENDARIOS (navegables) =====
 // Mes/año visible de cada calendario. Junio 2026 = mes índice 5.
 const _hoy=new Date();
-const calState={ general:{m:_hoy.getMonth(),y:_hoy.getFullYear()}, rrss:{m:_hoy.getMonth(),y:_hoy.getFullYear()} };
+// Hay tres calendarios y cada uno recuerda por su cuenta el mes que se está mirando:
+// 'rrss' (publicaciones), 'persona' (las tareas de Alba o de Daniela) y
+// 'proyecto' (las tareas de un proyecto, con las de las dos mezcladas).
+const calState={ rrss:{m:_hoy.getMonth(),y:_hoy.getFullYear()}, persona:{m:_hoy.getMonth(),y:_hoy.getFullYear()}, proyecto:{m:_hoy.getMonth(),y:_hoy.getFullYear()} };
+const CALS={
+  rrss:     {grid:'calRrssGrid',    mes:'calRrssMonth'},
+  persona:  {grid:'calPersonaGrid', mes:'calPersonaMonth'},
+  proyecto: {grid:'calProyGrid',    mes:'calProyMonth'}
+};
+// De quién es el calendario que se está mirando (igual que personaTablero con el tablero)
+let personaCal='Alba';
+// Las tareas que le toca pintar a cada calendario. Una tarea sin fecha no entra
+// en ninguno: la rejilla solo mira las que tienen fechaISO.
+function tareasDelCalendario(tipo){
+  if(tipo==='rrss')     return tareas.filter(t=>t.rrss);
+  if(tipo==='persona')  return tareas.filter(t=>t.resp===personaCal && !t.rrss && !t.done);
+  // Sin proyecto abierto no se pinta nada: si no, las tareas sueltas (proj null)
+  // se colarían en el calendario del proyecto.
+  if(tipo==='proyecto') return proyectoActivo ? tareas.filter(t=>t.proj===proyectoActivo && !t.rrss && !t.done) : [];
+  return [];
+}
 const HOY_DIA=_hoy.getDate(), HOY_MES=_hoy.getMonth(), HOY_ANYO=_hoy.getFullYear();
 
-function buildCal(contId,tipo){
-  const grid=document.getElementById(contId); if(!grid) return; grid.innerHTML='';
+function buildCal(tipo){
+  const cfg=CALS[tipo]; if(!cfg) return;
+  const grid=document.getElementById(cfg.grid); if(!grid) return; grid.innerHTML='';
   const st=calState[tipo];
+  const delCal=tareasDelCalendario(tipo);
   // Actualizar etiqueta del mes
-  const lbl=document.getElementById(tipo==='general'?'calGeneralMonth':'calRrssMonth');
+  const lbl=document.getElementById(cfg.mes);
   if(lbl) lbl.textContent=MESES[st.m].charAt(0).toUpperCase()+MESES[st.m].slice(1)+' '+st.y;
   // Cálculo del mes
   const primero=new Date(st.y,st.m,1);
@@ -1035,19 +1122,26 @@ function buildCal(contId,tipo){
     celda.ondragover=(ev)=>{ev.preventDefault();celda.classList.add('cal-dragover');};
     celda.ondragleave=()=>celda.classList.remove('cal-dragover');
     celda.ondrop=(ev)=>{ev.preventDefault();celda.classList.remove('cal-dragover');soltarEnDia(iso);};
-    let evs;
-    if(tipo==='general'){evs=tareas.filter(t=>t.fechaISO===iso && !t.done && !t.rrss);}
-    else{evs=tareas.filter(t=>t.fechaISO===iso && t.rrss);}
+    const evs=delCal.filter(t=>t.fechaISO===iso);
     evs.forEach(t=>{
       const e=document.createElement('div'); e.className='cal-event';
-      if(tipo==='general'){const c=t.proj?colorProducto[t.proj]:{bg:'var(--hover)',fg:'var(--ink-2)'};e.style.background=c.bg;e.style.color=c.fg;}
-      else{const c=colorEventoRrss(t);e.style.background=c.bg;e.style.color=c.fg;}
+      let c;
+      if(tipo==='rrss')          c=colorEventoRrss(t);
+      // En el calendario de un proyecto el color dice de quién es la tarea,
+      // porque ahí se mezclan las de Alba y las de Daniela.
+      else if(tipo==='proyecto') c={bg:avatarColor[t.resp]||'var(--hover)', fg:'#fff'};
+      else                       c=t.proj?colorProducto[t.proj]:{bg:'var(--hover)',fg:'var(--ink-2)'};
+      e.style.background=c.bg; e.style.color=c.fg;
       // Puntito de estado + (en RRSS) abreviatura de formato + título
       const dot=`<span class="estado-dot" style="background:${colorEstado(t)}; width:10px; height:10px; margin-right:4px; box-shadow:0 0 0 1.5px rgba(255,255,255,0.95);"></span>`;
       let formatoTag='';
       if(tipo==='rrss' && t.format){
         const abr={'Reel':'RE','Story':'ST','Post':'PO','Carrusel':'CA','TikTok':'TT','Artículo':'AR'};
         formatoTag=`<span class="cal-formato">${abr[t.format]||t.format.slice(0,2).toUpperCase()}</span> `;
+      }
+      // En el calendario del proyecto, la inicial de quien la lleva
+      if(tipo==='proyecto' && t.resp){
+        formatoTag=`<span class="cal-formato">${t.resp[0]}</span> `;
       }
       e.innerHTML=dot+formatoTag+'<span class="cal-ev-txt">'+t.t+'</span>';
       e.draggable=true;
@@ -1073,11 +1167,11 @@ function cambiarMes(tipo,dir){
   st.m+=dir;
   if(st.m<0){st.m=11;st.y--;}
   if(st.m>11){st.m=0;st.y++;}
-  buildCal(tipo==='general'?'calGeneralGrid':'calRrssGrid',tipo);
+  buildCal(tipo);
 }
 function irHoy(tipo){
   calState[tipo]={m:HOY_MES,y:HOY_ANYO};
-  buildCal(tipo==='general'?'calGeneralGrid':'calRrssGrid',tipo);
+  buildCal(tipo);
 }
 
 // ===== PANEL LATERAL =====
@@ -1332,7 +1426,7 @@ function toggleFilter(persona,btn){
 }
 
 // ===== NAVEGACIÓN =====
-const titulos={'lista-alba':'Lista Alba','lista-carlota':'Lista Daniela','cal-general':'Calendario general','cal-rrss':'Calendario RRSS','proyecto-kiwi':'Proyecto','tablero-persona':'Tablero','lista-rrss':'Publicaciones','tablero-rrss':'Publicaciones','notas':'Plan de contenido'};
+const titulos={'lista-alba':'Alba','lista-carlota':'Daniela','cal-persona':'Calendario','cal-rrss':'Calendario RRSS','proyecto-kiwi':'Proyecto','lista-proyecto':'Proyecto','cal-proyecto':'Proyecto','notas-proyecto':'Notas del proyecto','tablero-persona':'Tablero','lista-rrss':'RRSS','tablero-rrss':'RRSS','notas':'Plan de contenido'};
 function showView(id,el){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   const target=document.getElementById('view-'+id); if(target) target.classList.add('active');
@@ -1392,13 +1486,95 @@ async function renombrarProyecto(i){
   renderAll();
   showToast('Proyecto renombrado a "'+limpio+'"');
 }
+// Las tres vistas de un proyecto comparten cabecera (nombre, migas y punto de color)
+function pintarCabeceraProyecto(pref){
+  const nombre=proyectoActivo||'Proyecto';
+  const c=colorProducto[nombre];
+  const t=document.getElementById(pref+'Title');      if(t) t.textContent=nombre;
+  const b=document.getElementById(pref+'Breadcrumb'); if(b) b.textContent=nombre;
+  const d=document.getElementById(pref+'Dot');        if(d && c) d.style.background=c.dot;
+}
+
+// LISTA del proyecto: las tareas de ese proyecto, de Alba y de Daniela juntas
+function verListaProyecto(){
+  if(!proyectoActivo){ showToast('Crea un proyecto primero'); return; }
+  showView('lista-proyecto');
+  marcarProyectoSidebar();
+  renderListaProyecto();
+}
+function renderListaProyecto(){
+  const cont=document.getElementById('listProyecto'); if(!cont) return;
+  pintarCabeceraProyecto('lp');
+  if(!proyectoActivo){ cont.innerHTML='<div class="empty-hint">Crea un proyecto para ver su lista.</div>'; return; }
+  const items=tareas.filter(t=>t.proj===proyectoActivo && !t.rrss);
+  const sub=document.getElementById('subListaProy');
+  if(sub) sub.textContent=items.filter(t=>!t.done).length+' tareas activas de '+items.length;
+  if(!items.length){ cont.innerHTML='<div class="empty-hint">Este proyecto no tiene tareas todavía.</div>'; return; }
+  cont.innerHTML=listaAgrupadaHTML(items,true);
+}
+
+// CALENDARIO del proyecto: solo sus tareas, mezclando las de las dos
+function verCalendarioProyecto(){
+  if(!proyectoActivo){ showToast('Crea un proyecto primero'); return; }
+  showView('cal-proyecto');
+  marcarProyectoSidebar();
+  renderCalProyecto();
+}
+function renderCalProyecto(){
+  pintarCabeceraProyecto('cp');
+  const items=proyectoActivo ? tareas.filter(t=>t.proj===proyectoActivo && !t.rrss && !t.done) : [];
+  const conFecha=items.filter(t=>t.fechaISO).length;
+  const sub=document.getElementById('subCalProy');
+  if(sub) sub.textContent=conFecha+' con fecha · '+(items.length-conFecha)+' sin fecha (no salen en el calendario)';
+  buildCal('proyecto');
+}
+
+// NOTAS del proyecto: un bloc en blanco por proyecto, guardado en Supabase
+function verNotasProyecto(){
+  if(!proyectoActivo){ showToast('Crea un proyecto primero'); return; }
+  showView('notas-proyecto');
+  marcarProyectoSidebar();
+  renderNotasProyecto();
+}
+function renderNotasProyecto(){
+  pintarCabeceraProyecto('np');
+  const ta=document.getElementById('notasProyecto'); if(!ta) return;
+  const p=proyectos.find(x=>x.nombre===proyectoActivo);
+  ta.value=(p && p.notas) ? p.notas : '';
+  const est=document.getElementById('npEstado');
+  if(est) est.textContent='Notas de este proyecto';
+}
+// Se guarda solo, 800 ms después de la última tecla, para no escribir en cada letra
+let notasTimer=null;
+function notasProyectoCambio(){
+  const est=document.getElementById('npEstado'); if(est) est.textContent='Escribiendo…';
+  clearTimeout(notasTimer);
+  notasTimer=setTimeout(guardarNotasProyecto,800);
+}
+async function guardarNotasProyecto(){
+  const ta=document.getElementById('notasProyecto'); if(!ta) return;
+  const p=proyectos.find(x=>x.nombre===proyectoActivo); if(!p) return;
+  const texto=ta.value;
+  const est=document.getElementById('npEstado');
+  const {error}=await sb.from('proyectos').update({notas:texto}).eq('id',p.id);
+  if(error){ if(est) est.textContent='No se ha podido guardar: '+error.message; return; }
+  p.notas=texto;
+  const ps=proyectosSupabase.find(x=>x.id===p.id); if(ps) ps.notas=texto;
+  if(est) est.textContent='Guardado';
+}
+
 function abrirProyecto(nombre,el){
   proyectoActivo=nombre;
   renderKanban();
   showView('proyecto-kiwi',null);
-  // Marcar activo en el sidebar
+  marcarProyectoSidebar();
+}
+// showView limpia el resaltado del menú: en las cuatro pestañas de un proyecto
+// hay que devolvérselo a su botón del sidebar.
+function marcarProyectoSidebar(){
   document.querySelectorAll('#navProyectos .nav-item').forEach(n=>{
-    n.classList.toggle('active', n.querySelector('.label').textContent===nombre);
+    const et=n.querySelector('.label');
+    n.classList.toggle('active', !!et && et.textContent===proyectoActivo);
   });
 }
 function llenarSelectProyectos(){
@@ -1552,9 +1728,9 @@ async function ideaAPublicacion(id){
 // ===== RENDER GLOBAL =====
 function renderAll(){
   renderProyectosSidebar(); llenarSelectProyectos();
-  renderLista('Alba'); renderLista('Daniela'); renderKanban();
+  renderLista('Alba'); renderLista('Daniela'); renderKanban(); renderListaProyecto();
   renderListaRrss(); renderKanbanPersona(); renderKanbanRrss();
-  buildCal('calGeneralGrid','general'); buildCal('calRrssGrid','rrss');
+  buildCal('rrss'); renderCalPersona(); renderCalProyecto();
   renderNotif(); renderIdeas();
 }
 // Arranque: comprobar si ya hay sesión iniciada
